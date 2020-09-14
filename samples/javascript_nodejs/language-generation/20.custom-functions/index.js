@@ -3,6 +3,11 @@
 
 const dotenv = require('dotenv');
 const path = require('path');
+
+// Import required bot configuration.
+const ENV_FILE = path.join(__dirname, '.env');
+dotenv.config({ path: ENV_FILE });
+
 const restify = require('restify');
 const { Templates } = require('botbuilder-lg');
 
@@ -12,10 +17,6 @@ const { BotFrameworkAdapter } = require('botbuilder');
 
 // This bot's main dialog.
 const { EchoBot } = require('./bot');
-
-// Import required bot configuration.
-const ENV_FILE = path.join(__dirname, '.env');
-dotenv.config({ path: ENV_FILE });
 
 // Create HTTP server
 const server = restify.createServer();
@@ -38,7 +39,8 @@ const lgTemplates = Templates.parseFile(path.join(__dirname, './resources/Adapte
 const onTurnErrorHandler = async (context, error) => {
     // This check writes out errors to console log .vs. app insights.
     // NOTE: In production environment, you should consider logging this to Azure
-    //       application insights.
+    //       application insights. See https://aka.ms/bottelemetry for telemetry 
+    //       configuration instructions.
     console.error(lgTemplates.evaluate('SomethingWentWrong', {
         message: `${ error }`
     }));

@@ -1,0 +1,10 @@
+[generator.lg](../generator.lg)
+
+# filename
+- ${builtinEntityFilename(entity)}
+
+# template
+- ```
+
+${operations(entity, null, true)}
+```

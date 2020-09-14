@@ -5,6 +5,9 @@
 
 // Import required packages
 const path = require('path');
+const ENV_FILE = path.join(__dirname, '.env');
+require('dotenv').config({ path: ENV_FILE });
+
 const restify = require('restify');
 const { Templates } = require('botbuilder-lg');
 
@@ -15,9 +18,6 @@ const { BotFrameworkAdapter, MemoryStorage, ConversationState, UserState } = req
 // This bot's main dialog.
 const { RichCardsBot } = require('./bots/richCardsBot');
 const { MainDialog } = require('./dialogs/mainDialog');
-
-const ENV_FILE = path.join(__dirname, '.env');
-require('dotenv').config({ path: ENV_FILE });
 
 // Create adapter. See https://aka.ms/about-bot-adapter to learn more about adapters.
 const adapter = new BotFrameworkAdapter({
@@ -32,7 +32,8 @@ const lgTemplates = Templates.parseFile('./resources/AdapterWithErrorHandler.lg'
 adapter.onTurnError = async (context, error) => {
     // This check writes out errors to console log .vs. app insights.
     // NOTE: In production environment, you should consider logging this to Azure
-    //       application insights.
+    //       application insights. See https://aka.ms/bottelemetry for telemetry 
+    //       configuration instructions.
     console.error(lgTemplates.evaluate('SomethingWentWrong', {
         message: `${ error }`
     }));

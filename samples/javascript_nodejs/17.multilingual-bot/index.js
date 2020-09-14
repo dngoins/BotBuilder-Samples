@@ -5,6 +5,11 @@
 
 // Import required packages.
 const path = require('path');
+
+// Note: Ensure you have a .env file and include translatorKey.
+const ENV_FILE = path.join(__dirname, '.env');
+require('dotenv').config({ path: ENV_FILE });
+
 const restify = require('restify');
 const { MicrosoftTranslator } = require('./translation/microsoftTranslator');
 const { TranslatorMiddleware } = require('./translation/translatorMiddleware');
@@ -15,10 +20,6 @@ const { BotFrameworkAdapter, MemoryStorage, UserState, ActivityTypes, TurnContex
 
 // This bot's main dialog.
 const { MultilingualBot } = require('./bots/multilingualBot');
-
-// Note: Ensure you have a .env file and include translatorKey.
-const ENV_FILE = path.join(__dirname, '.env');
-require('dotenv').config({ path: ENV_FILE });
 
 // Used to create the BotStatePropertyAccessor for storing the user's language preference.
 const LANGUAGE_PREFERENCE = 'language_preference';
@@ -33,7 +34,8 @@ const adapter = new BotFrameworkAdapter({
 adapter.onTurnError = async (context, error) => {
     // This check writes out errors to console log .vs. app insights.
     // NOTE: In production environment, you should consider logging this to Azure
-    //       application insights.
+    //       application insights. See https://aka.ms/bottelemetry for telemetry 
+    //       configuration instructions.
     console.error(`\n [onTurnError] unhandled error: ${ error }`);
 
     // Send a trace activity, which will be displayed in Bot Framework Emulator

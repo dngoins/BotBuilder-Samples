@@ -5,6 +5,11 @@
 
 // Import required packages
 const path = require('path');
+
+// Note: Ensure you have a .env file and include QnAMakerKnowledgeBaseId, QnAMakerEndpointKey and QnAMakerHost.
+const ENV_FILE = path.join(__dirname, '.env');
+require('dotenv').config({ path: ENV_FILE });
+
 const restify = require('restify');
 
 // Import required bot services. See https://aka.ms/bot-services to learn more about the different parts of a bot.
@@ -12,10 +17,6 @@ const { BotFrameworkAdapter, ConversationState, MemoryStorage, UserState } = req
 
 const { QnABot } = require('./bots/QnABot');
 const { RootDialog } = require('./dialogs/rootDialog');
-
-// Note: Ensure you have a .env file and include QnAMakerKnowledgeBaseId, QnAMakerEndpointKey and QnAMakerHost.
-const ENV_FILE = path.join(__dirname, '.env');
-require('dotenv').config({ path: ENV_FILE });
 
 // Create HTTP server.
 const server = restify.createServer();
@@ -36,7 +37,8 @@ const adapter = new BotFrameworkAdapter({
 adapter.onTurnError = async (context, error) => {
     // This check writes out errors to console log .vs. app insights.
     // NOTE: In production environment, you should consider logging this to Azure
-    //       application insights.
+    //       application insights. See https://aka.ms/bottelemetry for telemetry 
+    //       configuration instructions.
     console.error(`\n [onTurnError] unhandled error: ${ error }`);
 
     // Send a trace activity, which will be displayed in Bot Framework Emulator
@@ -69,8 +71,16 @@ if (!endpointHostName.includes('/v5.0') && !endpointHostName.endsWith('/qnamaker
     endpointHostName = endpointHostName + '/qnamaker';
 }
 
+var endpointKey = process.env.QnAEndpointKey;
+
+if (!endpointKey || 0 === endpointKey.length)
+{
+   // To support backward compatibility for Key Names
+    endpointKey = process.env.QnAAuthKey;
+}
+
 // Create the main dialog.
-const dialog = new RootDialog(process.env.QnAKnowledgebaseId, process.env.QnAEndpointKey, endpointHostName);
+const dialog = new RootDialog(process.env.QnAKnowledgebaseId, endpointKey, endpointHostName);
 
 // Create the bot's main handler.
 const bot = new QnABot(conversationState, userState, dialog);

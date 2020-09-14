@@ -3,6 +3,11 @@
 
 const dotenv = require('dotenv');
 const path = require('path');
+
+// Import required bot configuration.
+const ENV_FILE = path.join(__dirname, '.env');
+dotenv.config({ path: ENV_FILE });
+
 const restify = require('restify');
 
 // Import required bot services.
@@ -13,10 +18,6 @@ const { MicrosoftAppCredentials } = require('botframework-connector');
 
 // This bot's main dialog.
 const { IntersectionBot } = require('./bot');
-
-// Import required bot configuration.
-const ENV_FILE = path.join(__dirname, '.env');
-dotenv.config({ path: ENV_FILE });
 
 // Create HTTP server
 const server = restify.createServer();
@@ -46,7 +47,8 @@ adapter.use(new InspectionMiddleware(inspectionState, userState, conversationSta
 adapter.onTurnError = async (context, error) => {
     // This check writes out errors to console log .vs. app insights.
     // NOTE: In production environment, you should consider logging this to Azure
-    //       application insights.
+    //       application insights. See https://aka.ms/bottelemetry for telemetry 
+    //       configuration instructions.
     console.error(`\n [onTurnError] unhandled error: ${ error }`);
 
     // Send a trace activity, which will be displayed in Bot Framework Emulator

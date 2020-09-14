@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 
 const path = require('path');
+
+// Read botFilePath and botFileSecret from .env file.
+const ENV_FILE = path.join(__dirname, './.env');
+require('dotenv').config({ path: ENV_FILE });
+
 const restify = require('restify');
 
 // Import required bot services.
@@ -9,10 +14,6 @@ const restify = require('restify');
 const { BotFrameworkAdapter } = require('botbuilder');
 
 const { AttachmentsBot } = require('./bots/attachmentsBot');
-
-// Read botFilePath and botFileSecret from .env file.
-const ENV_FILE = path.join(__dirname, './.env');
-require('dotenv').config({ path: ENV_FILE });
 
 // Create adapter. See https://aka.ms/about-bot-adapter to learn more about adapters.
 const adapter = new BotFrameworkAdapter({
@@ -24,7 +25,8 @@ const adapter = new BotFrameworkAdapter({
 adapter.onTurnError = async (context, error) => {
     // This check writes out errors to console log .vs. app insights.
     // NOTE: In production environment, you should consider logging this to Azure
-    //       application insights.
+    //       application insights. See https://aka.ms/bottelemetry for telemetry 
+    //       configuration instructions.
     console.error(`\n [onTurnError] unhandled error: ${ error }`);
 
     // Send a trace activity, which will be displayed in Bot Framework Emulator

@@ -5,6 +5,11 @@
 
 // Import required packages
 const path = require('path');
+
+// Note: Ensure you have a .env file and include LuisAppId, LuisAPIKey and LuisAPIHostName.
+const ENV_FILE = path.join(__dirname, '.env');
+require('dotenv').config({ path: ENV_FILE });
+
 const restify = require('restify');
 const { Templates } = require('botbuilder-lg');
 
@@ -22,10 +27,6 @@ const { MainDialog } = require('./dialogs/mainDialog');
 const { BookingDialog } = require('./dialogs/bookingDialog');
 const BOOKING_DIALOG = 'bookingDialog';
 
-// Note: Ensure you have a .env file and include LuisAppId, LuisAPIKey and LuisAPIHostName.
-const ENV_FILE = path.join(__dirname, '.env');
-require('dotenv').config({ path: ENV_FILE });
-
 // Create adapter.
 // See https://aka.ms/about-bot-adapter to learn more about adapters.
 const adapter = new BotFrameworkAdapter({
@@ -41,7 +42,8 @@ const lgTemplates = Templates.parseFile(path.join(__dirname, './resources/Adapte
 adapter.onTurnError = async (context, error) => {
     // This check writes out errors to console log .vs. app insights.
     // NOTE: In production environment, you should consider logging this to Azure
-    //       application insights.
+    //       application insights. See https://aka.ms/bottelemetry for telemetry 
+    //       configuration instructions.
     console.error(lgTemplates.evaluate('SomethingWentWrong', {
         message: `${ error }`
     }));

@@ -5,13 +5,9 @@ Bot Framework v4 bot authentication using Microsoft Graph sample
 This bot has been created using [Bot Framework](https://dev.botframework.com), is shows how to uss the bot authentication capabilities of Azure Bot Service. In this sample we are assuming the OAuth 2 provider is Azure Active Directory v2 (AADv2) and are utilizing the Microsoft Graph API to retrieve data about the user. [Check here](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-authentication?view=azure-bot-service-4.0&tabs=csharp) for information about getting an AADv2
 application setup for use in Azure Bot Service. The [scopes](https://developer.microsoft.com/en-us/graph/docs/concepts/permissions_reference) used in this sample are the following:
 
-- `email`
-- `Mail.Read`
-- `Mail.Send.Shared`
 - `openid`
 - `profile`
 - `User.Read`
-- `User.ReadBasic.All`
 
 ## Prerequisites
 
@@ -57,7 +53,7 @@ application setup for use in Azure Bot Service. The [scopes](https://developer.m
 
 [Microsoft Bot Framework Emulator](https://github.com/microsoft/botframework-emulator) is a desktop application that allows bot developers to test and debug their bots on localhost or running remotely through a tunnel.
 
-- Install the Bot Framework Emulator from [here](https://github.com/microsoft/botframework-emulator/releases)
+- Install the latest Bot Framework Emulator from [here](https://github.com/Microsoft/BotFramework-Emulator/releases)
 - In Bot Framework Emulator Settings, enable `Use a sign-in verification code for OAuthCards` to receive the magic code
 
 ### Connect to bot using Bot Framework Emulator
@@ -66,7 +62,7 @@ application setup for use in Azure Bot Service. The [scopes](https://developer.m
 - File -> Open Bot
 - Enter a Bot URL of `http://localhost:3978/api/messages
 
-## Authentication
+## Interacting with the bot
 
 This sample uses the bot authentication capabilities of Azure Bot Service, providing features to make it easier to develop a bot that
 authenticates users to various identity providers such as Azure AD (Azure Active Directory), GitHub, Uber, and so on. These updates also

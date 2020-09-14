@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 
 const path = require('path');
+
+// Read environment variables from .env file
+const ENV_FILE = path.join(__dirname, '.env');
+require('dotenv').config({ path: ENV_FILE });
+
 const restify = require('restify');
 
 // Import required bot services.
@@ -10,10 +15,6 @@ const { BotFrameworkAdapter, MemoryStorage, ConversationState, UserState } = req
 
 // This bot's main dialog.
 const { CustomPromptBot } = require('./bots/customPromptBot');
-
-// Read environment variables from .env file
-const ENV_FILE = path.join(__dirname, '.env');
-require('dotenv').config({ path: ENV_FILE });
 
 // Create HTTP server
 const server = restify.createServer();
@@ -42,7 +43,8 @@ const bot = new CustomPromptBot(conversationState, userState);
 adapter.onTurnError = async (context, error) => {
     // This check writes out errors to console log .vs. app insights.
     // NOTE: In production environment, you should consider logging this to Azure
-    //       application insights.
+    //       application insights. See https://aka.ms/bottelemetry for telemetry 
+    //       configuration instructions.
     console.error(`\n [onTurnError] unhandled error: ${ error }`);
 
     // Send a trace activity, which will be displayed in Bot Framework Emulator

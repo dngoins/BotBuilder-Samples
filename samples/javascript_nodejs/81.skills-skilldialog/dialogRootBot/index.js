@@ -12,13 +12,13 @@ const restify = require('restify');
 const { ActivityTypes, BotFrameworkAdapter, ChannelServiceRoutes, ConversationState, InputHints, MemoryStorage, SkillHandler, SkillHttpClient, TurnContext } = require('botbuilder');
 const { AuthenticationConfiguration, SimpleCredentialProvider } = require('botframework-connector');
 
-// This bot's main dialog.
-const { RootBot } = require('./bots/rootBot');
-const { MainDialog } = require('./dialogs/mainDialog');
-
 // Note: Ensure you have a .env file and include LuisAppId, LuisAPIKey and LuisAPIHostName.
 const ENV_FILE = path.join(__dirname, '.env');
 require('dotenv').config({ path: ENV_FILE });
+
+// This bot's main dialog.
+const { RootBot } = require('./bots/rootBot');
+const { MainDialog } = require('./dialogs/mainDialog');
 
 // Import Skills modules.
 const { allowedSkillsClaimsValidator } = require('./authentication/allowedSkillsClaimsValidator');
@@ -44,7 +44,8 @@ adapter.use(new LoggerMiddleware());
 const onTurnErrorHandler = async (context, error) => {
     // This check writes out errors to the console log, instead of to app insights.
     // NOTE: In production environment, you should consider logging this to Azure
-    //       application insights.
+    //       application insights. See https://aka.ms/bottelemetry for telemetry 
+    //       configuration instructions.
     console.error(`\n [onTurnError] unhandled error: ${ error }`);
 
     await sendErrorMessage(context, error);

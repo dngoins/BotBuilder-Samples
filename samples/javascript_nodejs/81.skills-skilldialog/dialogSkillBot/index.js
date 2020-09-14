@@ -5,6 +5,11 @@
 
 // Import required packages.
 const path = require('path');
+
+// Note: Ensure you have a .env file and include LuisAppId, LuisAPIKey and LuisAPIHostName.
+const ENV_FILE = path.join(__dirname, '.env');
+require('dotenv').config({ path: ENV_FILE });
+
 const restify = require('restify');
 
 // Import required bot services.
@@ -16,10 +21,6 @@ const { AuthenticationConfiguration } = require('botframework-connector');
 const { SkillBot } = require('./bots/skillBot');
 const { ActivityRouterDialog } = require('./dialogs/activityRouterDialog');
 const { FlightBookingRecognizer } = require('./dialogs/flightBookingRecognizer');
-
-// Note: Ensure you have a .env file and include LuisAppId, LuisAPIKey and LuisAPIHostName.
-const ENV_FILE = path.join(__dirname, '.env');
-require('dotenv').config({ path: ENV_FILE });
 
 // Import Skills modules.
 const { allowedSkillsClaimsValidator: allowedCallersClaimsValidator } = require('./authentication/allowedCallersClaimsValidator');
@@ -39,7 +40,8 @@ const adapter = new BotFrameworkAdapter({
 const onTurnErrorHandler = async (context, error) => {
     // This check writes out errors to the console log, instead of to app insights.
     // NOTE: In a production environment, you should consider logging this to Azure
-    //       application insights.
+    //       application insights.  See https://aka.ms/bottelemetry for telemetry 
+    //       configuration instructions.
     console.error(`\n [onTurnError] unhandled error: ${ error }`);
 
     await sendErrorMessage(context, error);
